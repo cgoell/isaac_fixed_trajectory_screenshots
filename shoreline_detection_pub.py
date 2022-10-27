@@ -3,6 +3,8 @@
 import rospy
 from geometry_msgs.msg import Pose
 
+# y: [-1000, -400] and x: [-1800, 650], and z: 100.
+
 def talker():
     pub = rospy.Publisher('/sl_detection_pose', Pose, queue_size=10)
     rospy.init_node('sl_detection_pub', anonymous=True)
@@ -16,7 +18,13 @@ def talker():
     sl_detection_pose.orientation.y = 0
     sl_detection_pose.orientation.z = 0
 
-    while not rospy.is_shutdown():        
+    while not rospy.is_shutdown():
+
+        if sl_detection_pose.position.x == -1800:
+            sl_detection_pose.position.x = 650
+            sl_detection_pose.position.y -= 50
+
+
         sl_detection_pose.position.x -= 50
         pub.publish(sl_detection_pose)
         #print(sl_detection_pose)
